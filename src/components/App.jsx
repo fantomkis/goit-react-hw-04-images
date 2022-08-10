@@ -5,7 +5,7 @@ import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
 import Loader from './Loader/Loader';
 import Button from './Button/Button';
 import Modal from './Modal/Modal';
-import api from './api/api';
+import api from '../api/api';
 
 export function App() {
   const [search, setSearch] = useState('');
@@ -19,14 +19,19 @@ export function App() {
   useEffect(() => {
     if (search === '') return;
 
-    const asincApi = async () => {
-      const arr = await api(search, page);
-      setData(prev => [...prev, ...arr.hits]);
-      setLoging(false);
-      setTotalHits(arr.totalHits);
-    };
-    asincApi();
-    setLoging(true);
+    try {
+      const asincApi = async () => {
+        const arr = await api(search, page);
+        setData(prev => [...prev, ...arr.hits]);
+        setLoging(false);
+        setTotalHits(arr.totalHits);
+      };
+      asincApi();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoging(true);
+    }
   }, [page, search]);
 
   const handelSearch = value => {

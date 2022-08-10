@@ -1,37 +1,41 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import s from './Modal.module.css';
 import PropTypes from 'prop-types';
 
-class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
+function Modal({ modalData, toggleModal }) {
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    window.removeEventListener('keydown', handleKeyDown);
+  }, [modalData]);
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
-  handleKeyDown = e => {
+  // componentDidMount() {
+  //   window.addEventListener('keydown', this.handleKeyDown);
+  // }
+
+  // componentWillUnmount() {
+  //   window.removeEventListener('keydown', this.handleKeyDown);
+  // }
+
+  const handleKeyDown = e => {
     if (e.code === 'Escape') {
       this.props.toggleModal();
     }
   };
 
-  handleCloseBackdrop = e => {
+  const handleCloseBackdrop = e => {
     if (e.target !== e.currentTarget) return;
-    this.props.toggleModal();
+    toggleModal();
   };
 
-  render() {
-    const { modalData } = this.props;
-    return (
-      <div className={s.overlay} onClick={this.handleCloseBackdrop}>
-        <div className={s.modal}>
-          <img src={modalData.src} alt={modalData.alt} />
-        </div>
+  return (
+    <div className={s.overlay} onClick={handleCloseBackdrop}>
+      <div className={s.modal}>
+        <img src={modalData.src} alt={modalData.alt} />
       </div>
-    );
-  }
+    </div>
+  );
 }
+
 Modal.propTypes = {
   modalData: PropTypes.object,
   toggleModal: PropTypes.func,
