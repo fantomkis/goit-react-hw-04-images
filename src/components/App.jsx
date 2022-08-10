@@ -19,19 +19,20 @@ export function App() {
   useEffect(() => {
     if (search === '') return;
 
-    try {
-      const asincApi = async () => {
+    const asincApi = async () => {
+      try {
         const arr = await api(search, page);
         setData(prev => [...prev, ...arr.hits]);
         setLoging(false);
         setTotalHits(arr.totalHits);
-      };
-      asincApi();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoging(true);
-    }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoging(true);
+      }
+    };
+
+    asincApi();
   }, [page, search]);
 
   const handelSearch = value => {

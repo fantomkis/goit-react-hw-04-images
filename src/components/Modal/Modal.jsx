@@ -4,8 +4,14 @@ import PropTypes from 'prop-types';
 
 function Modal({ modalData, toggleModal }) {
   useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.code === 'Escape') {
+        toggleModal();
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    window.removeEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [modalData]);
 
   // componentDidMount() {
@@ -15,12 +21,6 @@ function Modal({ modalData, toggleModal }) {
   // componentWillUnmount() {
   //   window.removeEventListener('keydown', this.handleKeyDown);
   // }
-
-  const handleKeyDown = e => {
-    if (e.code === 'Escape') {
-      this.props.toggleModal();
-    }
-  };
 
   const handleCloseBackdrop = e => {
     if (e.target !== e.currentTarget) return;
