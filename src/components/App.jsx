@@ -21,14 +21,14 @@ export function App() {
 
     const asincApi = async () => {
       try {
+        setLoging(true);
         const arr = await api(search, page);
         setData(prev => [...prev, ...arr.hits]);
-        setLoging(false);
         setTotalHits(arr.totalHits);
       } catch (error) {
         console.log(error);
       } finally {
-        setLoging(true);
+        setLoging(false);
       }
     };
 
@@ -55,10 +55,11 @@ export function App() {
   return (
     <div>
       <Searchbar handelSearch={handelSearch} />
-      {loging && <Loader />}
+
       <ImageGallery>
         <ImageGalleryItem data={data} onClickModal={onClickModal} />
       </ImageGallery>
+      {loging && <Loader />}
       {totalPage > page && <Button handlBtnlick={handlBtnlick} />}
 
       {modalStart && <Modal modalData={modalData} toggleModal={toggleModal} />}

@@ -12,7 +12,7 @@ function Modal({ modalData, toggleModal }) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [modalData]);
+  }, [toggleModal]);
 
   // componentDidMount() {
   //   window.addEventListener('keydown', this.handleKeyDown);
